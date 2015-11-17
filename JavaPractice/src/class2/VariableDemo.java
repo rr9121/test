@@ -13,6 +13,8 @@ public class VariableDemo {
 		System.out.println("b :"+ b);
 		b =(byte) a;
 		System.out.println("a :"+b + " " + l + " " + f+ " "+d);
+		System.out.println("a :"+b + " " + l + " " + f+ " "+d);
+		System.out.println("a :"+b + " " + l + " " + f+ " "+d);
 	}
 
 }
