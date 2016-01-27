@@ -64,7 +64,8 @@ class TextFrame extends JFrame {
 		insertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					textArea.append(textField.getText() + " " + pwdField.getText() + "\n");
+					String passText = new String(pwdField.getPassword());
+					textArea.append(" UserName: " +textField.getText() + " PassWord: " + passText + "\n");
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
