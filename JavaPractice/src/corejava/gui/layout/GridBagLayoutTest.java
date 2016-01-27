@@ -1,9 +1,12 @@
 package corejava.gui.layout;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -15,7 +18,7 @@ import javax.swing.JTextArea;
 public class GridBagLayoutTest {
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable(){
+		EventQueue.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
@@ -24,45 +27,61 @@ public class GridBagLayoutTest {
 				frame.setLocationByPlatform(true);
 				frame.setVisible(true);
 			}
-			
+
 		});
 
 	}
 
 }
+
 class FontFrame extends JFrame {
-	public FontFrame(){
+	public FontFrame() {
 		setTitle("GridBagLayout Test");
-		setSize(400,400);
-		
+		setSize(400, 400);
+
 		GridBagLayout gbLayout = new GridBagLayout();
 		setLayout(gbLayout);
-		
+
 		JLabel facelabel = new JLabel("Face: ");
-		face = new JComboBox(new String[]{"Serif","SansSerif","Monospaced","Dialog","DialogInput"});
+		face = new JComboBox(new String[] { "Serif", "SansSerif", "Monospaced", "Dialog", "DialogInput" });
 		JLabel sizelabel = new JLabel("Size: ");
-		size = new JComboBox(new String[]{"8","10","12","15","18","20","24","28","30"});
+		size = new JComboBox(new String[] { "8", "10", "12", "15", "18", "20", "24", "28", "30" });
 		bold = new JCheckBox("Bold");
 		italic = new JCheckBox("Italic");
-		
+
 		area = new JTextArea();
 		area.setText("The QUick brown Foxx jumps over the lazy dog");
 		area.setEditable(false);
 		area.setLineWrap(true);
+		area.setFont(new Font("Serif",0,8));
 		area.setBorder(BorderFactory.createEtchedBorder());
+
+		add(facelabel, new GBC(0, 0).setAnchor(GBC.EAST));
+		add(face, new GBC(1, 0).setFill(GBC.HORIZONTAL).setWeight(100, 0));
+
+		add(sizelabel, new GBC(0, 1).setAnchor(GBC.EAST));
+		add(size, new GBC(1, 1).setFill(GBC.HORIZONTAL).setWeight(100, 0).setInsets(1));
+
+		add(bold, new GBC(0, 2, 2, 1).setAnchor(GBC.CENTER).setWeight(100, 100));
+		add(italic, new GBC(0, 3, 2, 1).setAnchor(GBC.CENTER).setWeight(100, 100));
+
+		add(area, new GBC(2, 0, 1, 4).setFill(GBC.BOTH).setWeight(100, 100));
+
+		ActionListener actionListener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Font font = new Font((String)face.getSelectedItem(),(italic.isSelected() ? Font.ITALIC:0)| (bold.isSelected() ? Font.BOLD:0), Integer.valueOf((String)size.getSelectedItem()));
+				area.setFont(font);
+			}
+		};
 		
-		add(facelabel,new GBC(0,0).setAnchor(GBC.EAST));
-		add(face,new GBC(1,0).setFill(GBC.HORIZONTAL).setWeight(100, 0));
-		
-		add(sizelabel,new GBC(0,1).setAnchor(GBC.EAST));
-		add(size,new GBC(1,1).setFill(GBC.HORIZONTAL).setWeight(100,0).setInsets(1));
-		
-		add(bold,new GBC(0,2,2,1).setAnchor(GBC.CENTER).setWeight(100, 100));
-		add(italic, new GBC(0,3,2,1).setAnchor(GBC.CENTER).setWeight(100, 100));
-		
-		add(area,new GBC(2,0,1,4).setFill(GBC.BOTH).setWeight(100, 100));
-		
+		italic.addActionListener(actionListener);
+		face.addActionListener(actionListener);
+		size.addActionListener(actionListener);
+		bold.addActionListener(actionListener);
 	}
+
 	private JComboBox face;
 	private JComboBox size;
 	private JCheckBox bold;
@@ -71,45 +90,48 @@ class FontFrame extends JFrame {
 }
 
 class GBC extends GridBagConstraints {
-	public GBC(int gridx,int gridy) {
+	public GBC(int gridx, int gridy) {
 		this.gridx = gridx;
 		this.gridy = gridy;
 	}
-	
-	public GBC(int gridx,int gridy,int gridWidth,int gridHeight) {
+
+	public GBC(int gridx, int gridy, int gridWidth, int gridHeight) {
 		this.gridx = gridx;
 		this.gridy = gridy;
 		this.gridwidth = gridWidth;
 		this.gridheight = gridHeight;
 	}
-	
+
 	public GBC setAnchor(int anchor) {
 		this.anchor = anchor;
 		return this;
 	}
+
 	public GBC setFill(int fill) {
 		this.fill = fill;
 		return this;
 	}
-	
-	public GBC setWeight(double weightX,double weightY) {
+
+	public GBC setWeight(double weightX, double weightY) {
 		this.weightx = weightX;
 		this.weighty = weightY;
 		return this;
 	}
-	
+
 	public GBC setInsets(int distance) {
-		this.insets = new Insets(distance,distance,distance,distance);
+		this.insets = new Insets(distance, distance, distance, distance);
 		return this;
 	}
-	public GBC setInsets(int top,int left,int bottom,int right) {
-		this.insets = new Insets(top,left,bottom,right);
+
+	public GBC setInsets(int top, int left, int bottom, int right) {
+		this.insets = new Insets(top, left, bottom, right);
 		return this;
 	}
-	 public GBC setIpad(int ipadX,int ipadY) {
-		 this.ipadx = ipadX;
-		 this.ipady = ipadY;
-		 return this;
-	 }
-	
+
+	public GBC setIpad(int ipadX, int ipadY) {
+		this.ipadx = ipadX;
+		this.ipady = ipadY;
+		return this;
+	}
+
 }
